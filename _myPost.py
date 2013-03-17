@@ -47,7 +47,7 @@ class PostMeta(object):
         if(options.excerpt):
             Content.post_excerpt=self.encode_utli.ToUTF8(options.excerpt,encoding)
         if(options.content):
-            if(options.content.endswith('.txt')):
+            if(options.content.endswith('.txt') or options.content.endswith('.html') or options.content.endswith('.htm')):
                 Content.post_content=self.readContentFor(options.content, server)
             else:
                 Content.post_content=self.encode_utli.ToUTF8(options.content,encoding)
@@ -82,7 +82,7 @@ class PostMeta(object):
                 pattern = re.compile(r'"\[(.*?)\]"')
                 base_path=''
                 if(len(re.findall(pattern,_value))>0):
-                    if(options.content.endswith('.txt')):
+                    if(options.content.endswith('.txt') or options.content.endswith('.html') or options.content.endswith('.htm')):
                         base_path = os.path.dirname(options.content)
                         if(base_path is ''):
                             parser.error('The content file should be a full file name with absolue path.')
