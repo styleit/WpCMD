@@ -36,7 +36,7 @@ import WordPressAPI
 import Utility
 import sys
 
-encode_utli = Utility.Encoding()
+_utli = Utility.Encoding()
 post_tools = _myPost.PostMeta()
 parser = OptionParser()
 parser.add_option('--type',
@@ -144,24 +144,9 @@ parser.add_option('-a','--tag',
 if(len(sys.argv)==1):
     parser.error("Please check the usage of newPost: with -h or --help.")
     
+account_info=_utli.GetAccountInfo()
 
-
-url=''
-user_name=''
-password=''
-try:    
-    account_info = open("account.txt").read()
-    url=encode_utli.ToUTF8(account_info.split(';')[0])
-    user_name = encode_utli.ToUTF8(account_info.split(';')[1])
-    password=encode_utli.ToUTF8(account_info.split(';')[2])
-except:
-    ''
-while (url=='' or user_name=='' or password==''):
-    url = raw_input('Your Site Addr:')
-    user_name = encode_utli.ToUTF8(raw_input('Your user name:'))
-    password = encode_utli.ToUTF8(raw_input('Password:'))
-    
-blog = WordPressAPI.WordPressClient(url,user_name,password)
+blog = WordPressAPI.WordPressClient(account_info['url'],account_info['user_name'],account_info['password'])
 Content = post_tools.getContentFromOper(parser, options,blog)
 result = blog.newPost(Content)
 print result
