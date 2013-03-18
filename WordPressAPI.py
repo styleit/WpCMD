@@ -4,9 +4,6 @@ Created on 2013-3-13
 @author: he
 '''
 import xmlrpclib
-import mimetypes
-import time
-from pdb import post_mortem
 
 class WordPressClient(object):
     '''
@@ -115,6 +112,7 @@ class WordPressClient(object):
         return self._server.wp.getMediaItem(self.blogid,self.user,self.password,value) 
         
     def getMediaLibrary (self,value):
+        media_filter={}
         if(value != None):
             media_filter = {
                       'number':value.number,
