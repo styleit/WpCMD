@@ -22,8 +22,8 @@ class Post(object):
         self.post_format=''
         self.post_name=''
         self.post_password=''
-        self.comment_status=''
-        self.ping_status=''
+        self.comment_status='open'
+        self.ping_status='open'
         self.sticky=None
         self.post_thumbnail=-1
         self.post_parent=-1
