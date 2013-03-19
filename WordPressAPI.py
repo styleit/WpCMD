@@ -140,4 +140,26 @@ class WordPressClient(object):
         
         return self._server.wp.uploadFile(self.blogid,self.user,self.password,data)
     
+    def getTaxonomy(self,taxonomy_name):
+        return self._server.wp.getTaxonomy(self.blogid,self.user,self.password,taxonomy_name)
     
+    def getTaxonomies(self):
+        return self._server.wp.getTaxonomies(self.blogid,self.user,self.password)
+    
+    def getTerm(self,taxonomy_name,term_id):
+        return self._server.wp.getTerm (self.blogid,self.user,self.password,taxonomy_name,term_id)
+    
+    def getTerms(self,taxonomy_name,taxonomy_filter=None):
+        _filter={}
+        if(not taxonomy_filter is None):
+            if(taxonomy_filter.number!=-1):
+                _filter['number']=taxonomy_filter.number
+            if(taxonomy_filter.offset!=-1):
+                _filter['offset']=taxonomy_filter.offset
+            if(taxonomy_filter.orderby!=''):
+                _filter['orderby']=taxonomy_filter.orderby
+            if(taxonomy_filter.search!=''):
+                _filter['search']=taxonomy_filter.search
+            _filter['hide_empty']=taxonomy_filter.hide_empty
+        
+        return self._server.wp.getTerms(self.blogid,self.user,self.password,taxonomy_name,_filter)
