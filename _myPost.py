@@ -57,6 +57,8 @@ class PostMeta(object):
             Content.post_format = self.encode_utli.ToUTF8(options.format)
         if(options.name):
             Content.post_name=self.encode_utli.ToUTF8(options.name,encoding)
+        else:
+            Content.post_name=self.encode_utli.Translation(Content.post_title)
         if(options.password):
             Content.post_password=self.encode_utli.ToUTF8(options.password)
         if(options.comment_status):

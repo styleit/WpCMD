@@ -4,7 +4,10 @@ Created on 2013-3-15
 @author: Administrator
 '''
 
-import  chardet
+import chardet
+import json
+import urllib
+
 class Encoding(object):
     '''
     classdocs
@@ -46,3 +49,9 @@ class Encoding(object):
                      'password':password
                      }
         return account_info
+    def Translation(self,value):
+        query_data='http://fanyi.youdao.com/openapi.do?keyfrom=styleit&key=1875213668&type=data&doctype=json&version=1.1&q='+value
+        page=urllib.urlopen(query_data).read()
+        trans_result = json.loads(page)
+        return trans_result['translation'][0]
+        
