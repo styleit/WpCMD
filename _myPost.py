@@ -44,13 +44,19 @@ class PostMeta(object):
             Content.post_title = self.encode_utli.ToUTF8(options.title,encoding)
         if(options.author_id):
             Content.post_author=self.encode_utli.ToUTF8(options.author_id)
-        if(options.excerpt):
-            Content.post_excerpt=self.encode_utli.ToUTF8(options.excerpt,encoding)
         if(options.content):
             if(options.content.endswith('.txt') or options.content.endswith('.html') or options.content.endswith('.htm')):
                 Content.post_content=self.readContentFor(options.content, server)
             else:
                 Content.post_content=self.encode_utli.ToUTF8(options.content,encoding)
+        if(options.excerpt):
+            Content.post_excerpt=self.encode_utli.ToUTF8(options.excerpt,encoding)
+        else:
+            tmp_post_excerpt=self.encode_utli.GetExcerpt(Content.post_content)
+            if tmp_post_excerpt.find('exc:') == 0:
+                Content.post_content = Content.post_content.replace('<exc>','').replace('</exc>', '')
+                tmp_post_excerpt = tmp_post_excerpt.replace('exc:', '')
+            Content.post_excerpt = tmp_post_excerpt
         if(options.date):
             Content.post_date=self.encode_utli.ToUTF8(options.date)
         if(options.format):

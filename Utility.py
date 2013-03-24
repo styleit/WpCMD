@@ -7,6 +7,8 @@ Created on 2013-3-15
 import chardet
 import json
 import urllib
+import re
+from pywin.framework.mdi_pychecker import TheDialog
 
 class Encoding(object):
     '''
@@ -26,6 +28,22 @@ class Encoding(object):
     
     def GetEncoding(self,value):
         return chardet.detect(value)['encoding']
+    
+    def GetExcerpt(self,value):
+        if value is None:
+            return None
+        pattern = re.compile(r'<exc>([\d\D]*?)</exc>')
+        the_excerpt=''
+        first_par=value.find('\n')
+        exc_list = pattern.findall(value)
+        if(len(exc_list)>0):
+            the_excerpt = 'exc:'
+            for item in exc_list:
+                the_excerpt += item
+        else: 
+            the_excerpt = value[0:first_par]
+            
+        return the_excerpt
     
     def GetAccountInfo(self):
         url=''
