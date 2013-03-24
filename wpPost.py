@@ -12,8 +12,8 @@ class Post(object):
         '''
         Constructor
         '''
-        self.post_type=''
-        self.post_status=''
+        self.post_type='post'
+        self.post_status='publish'
         self.post_title=''
         self.post_author=-1
         self.post_excerpt=''
