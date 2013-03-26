@@ -9,7 +9,14 @@ from wpMedia import MediaFilter
 from xmlrpclib import datetime
 import _myPost
 import wpTaxonomies
+import Utility
 
+cdn = Utility.UpYunClient()
+
+result = cdn.UpLoad(r'E:\Pictures\performace.png')
+print result
+
+'''
 tools =_myPost.PostMeta()
 
 term_filter = wpTaxonomies.TermsFilter()
@@ -20,7 +27,7 @@ result = myBlog.getTerms('category')
 
 for item in result:
     print item['name']
-
+'''
 
 ''' publish new post demo
 artical = wpPost.Post()

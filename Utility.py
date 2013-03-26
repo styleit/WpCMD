@@ -8,7 +8,12 @@ import chardet
 import json
 import urllib
 import re
+import ftplib
+from upyun import UpYun,md5,md5file
+import sys
+import datetime
 from pywin.framework.mdi_pychecker import TheDialog
+
 
 class Encoding(object):
     '''
@@ -72,4 +77,33 @@ class Encoding(object):
         page=urllib.urlopen(query_data).read()
         trans_result = json.loads(page)
         return trans_result['translation'][0]
+
+
+class UpYunClient(object):
+    '''
+    '''
+    def __init__(self):
+        self.ftp_raw_info=open("upyun.txt").read().split(';')
+        self.bucket_name=self.ftp_raw_info[0]
+        self.server_user=self.ftp_raw_info[1]
+        self.server_user_pwd = self.ftp_raw_info[2]
+        self.base_access_url = self.ftp_raw_info[3]
+        self.server = UpYun(self.bucket_name,self.server_user,self.server_user_pwd)
+        self.server.setApiDomain('v0.api.upyun.com')
         
+    def UpLoad(self,fileName):
+        data = open(fileName,'rb')
+        self.server.setContentMD5(md5file(data))
+        date_info=datetime.datetime.today()
+        remote_path=str(date_info.year)+'/'+str(date_info.month)
+        remote_file_name = '/'+str(date_info.microsecond)+fileName.split('\\')[-1]
+        
+        to_write= remote_path+remote_file_name
+        a = self.server.writeFile(to_write,data)
+        
+        if(a):
+            return self.base_access_url+'/'+remote_path+remote_file_name
+        else:
+            return None
+        
+            

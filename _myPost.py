@@ -176,7 +176,11 @@ class PostMeta(object):
             else:
                 match_dir[item]=os.path.join(base_path,item)
         for (key,value) in match_dir.items():
-            media_file = wpMedia.MediaForUpload(value)
-            remote_file = server.uploadFile(media_file)
+            if(os.path.exists('upyun.txt')):
+                upYun = Utility.UpYunClient()
+                remote_file=upYun.UpLoad(value)
+            else:
+                media_file = wpMedia.MediaForUpload(value)
+                remote_file = server.uploadFile(media_file)
             match_dir[key]=remote_file[expect_media_info]
         return match_dir
