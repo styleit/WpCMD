@@ -87,7 +87,7 @@ class PostMeta(object):
                     parser.error("Custom Fields key value pair Failed!")
                 _key=self.encode_utli.ToUTF8(item.split('>>')[0],encoding)
                 _value=self.encode_utli.ToUTF8(item.split('>>')[1],encoding)
-                pattern = re.compile(r'"\[(.*?)\]"')
+                pattern = re.compile(r'\[(.*?)\]')
                 base_path=''
                 if(len(re.findall(pattern,_value))>0):
                     if(options.content.endswith('.txt') or options.content.endswith('.html') or options.content.endswith('.htm')):
@@ -99,7 +99,7 @@ class PostMeta(object):
                             parser.error('Using direct content should give absolue path of the media '+ _value)    
                     match_dir=self.upLoadMeddiaByReg(server, _value, pattern, base_path)
                     for (key,value) in match_dir.items():
-                        _value = _value.replace('"['+key+']"',value)      
+                        _value = _value.replace('['+key+']',value)      
                     '''match_dir=self.upLoadMeddiaByReg(server, _value, pattern, base_path, expect_media_info)'''
                 cf.append(wpPost.CustomField(_key,_value))
             Content.custom_fields=cf   
@@ -158,7 +158,7 @@ class PostMeta(object):
         result = self.encode_utli.ToUTF8(tmp_buffer)
         
         baseDir=os.path.dirname(filename)
-        pattern = re.compile(r'<img.*?src="\[(.*?)\]"')
+        pattern = re.compile(r'<img.*?src="\[(.*?)\].*?"')
 
         match_dir = self.upLoadMeddiaByReg(server, result, pattern, baseDir)
 
@@ -179,8 +179,9 @@ class PostMeta(object):
             if(os.path.exists('upyun.txt')):
                 upYun = Utility.UpYunClient()
                 remote_file=upYun.UpLoad(value)
+                match_dir[key]=remote_file
             else:
                 media_file = wpMedia.MediaForUpload(value)
                 remote_file = server.uploadFile(media_file)
-            match_dir[key]=remote_file[expect_media_info]
+                match_dir[key]=remote_file[expect_media_info]
         return match_dir
